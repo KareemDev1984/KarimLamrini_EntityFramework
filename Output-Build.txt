@@ -1,0 +1,3 @@
+﻿1>------ Build started: Project: KarimLamrini_EntityFramework, Configuration: Debug Any CPU ------
+1>  KarimLamrini_EntityFramework -> C:\Users\KarimL\Desktop\KarimLamrini_EntityFramework\KarimLamrini_EntityFramework\bin\KarimLamrini_EntityFramework.dll
+========== Build: 1 succeeded, 0 failed, 0 up-to-date, 0 skipped ==========
