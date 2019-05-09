@@ -1,4 +1,4 @@
-﻿@model  List<KarimLamrini_EntityFramework.Models.Student>
+﻿@model  KarimLamrini_EntityFramework.ViewModels.ViewModel
 
 @{
     ViewBag.Title = "Home Page";
@@ -18,66 +18,102 @@
     <h3 class="text-center">What would you like to do?</h3>
 </div>
 
+
 <div class="row">
-    <div class="col-md-4">
-        <p><a class="btn btn-primary btn-lg btn-block" href="/School/AddStudent">Add Student</a></p>
+    <div class=" col-md-4">
+        <div class="alert alert-warning alert-dismissible">
+            <h4 class="card-title">Students</h4>
+            <table class="table">
+                <tr>
+                    <th>Student ID</th>
+                    <th>First name</th>
+                    <th>Last Name</th>
+                </tr>
+                @foreach (var student in Model.Students)
+                {
+                    <tr>
+                        <td>@student.StudentId</td>
+                        <td>@student.FirstName</td>
+                        <td>@student.LastName</td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <p> <a class="btn btn-success btn-group-lg btn-block " href="/School/AddStudent">Add student</a></p>
     </div>
-    <div class="col-md-4">
-        <p> <a class="btn btn-primary btn-lg btn-block" href="/School/AddAuthor">Add Author</a></p>
+    <div class=" col-md-4">
+        <div class="alert alert-warning alert-dismissible ">
+            <h4 class="card-title">Authors</h4>
+            <table class="table">
+                <tr>
+                    <th>Author ID</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                </tr>
+                @foreach (var author in Model.Authors)
+                {
+                    <tr>
+                        <td>@author.AuthorId</td>
+                        <td>@author.Name</td>
+                        <td>@author.SurName</td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <p> <a class="btn btn-success btn-group-lg btn-block" href="/School/AddAuthor">Add Author</a></p>
     </div>
-    <div class="col-md-4">
-        <p>   <a class="btn btn-primary btn-lg btn-block" href="/School/AddBook">Add Book</a></p>
+    <div class=" col-md-4">
+        <div class="alert alert-warning alert-dismissible ">
+            <h4 class="card-title">Books</h4>
+            <table class="table">
+                <tr>
+                    <th>Book ID</th>
+                    <th>Title</th>
+
+
+                </tr>
+      
+                    @foreach (var book in Model.Books)
+                    {
+                        <tr>
+                            <td>@book.BookId</td>
+                            <td>@book.Title</td>
+                        </tr>
+                    }
+              
+            </table>
+        </div>
+        <p>   <a class="btn btn-success btn-group-lg  " href="/School/AddBook">Add Book</a></p>
     </div>
 </div>
 
-<table class="table">
-    <tr>
-        <th>Student ID</th>
-        <th>Firstname</th>
-        <th>Lastname</th>
-        <th>Books</th>
-        <th>Authors</th>
 
-        <th>&nbsp;</th>
-    </tr>
-    @foreach (var student in Model)
-    {
-    <tr>
-        <td>@student.StudentId</td>
-        <td>@student.FirstName</td>
-        <td>@student.LastName</td>
-        <td>
-            <ul>
-                @foreach (var item in student.Books)
-                {
-                    <li>@item.Title</li>
-                }
-            </ul>
 
-        </td>
-        <td>
-            <ul>
-                @foreach (var item in student.Books)
-                {
-                    foreach (var author in item.Authors)
-                    {
-                        <li>@author.Name </li>
-                    }
-                }
-            </ul>
+@*<!-- Button trigger modal -->
+    <button type="button" class="btn btn-group" data-toggle="modal" data-target="#exampleModal">
+        Launch demo modal
+    </button>
 
-        </td>
 
-        <td>
-            <div class="pull-right">
-                <a href="@Url.Action("Edit", new { id = student.StudentId })" class="btn btn-warning btn-sm margin-right">
-                    <span class="glyphicon glyphicon-edit"></span><span class="hidden-xs"> Edit</span>
-                </a>
-                <a href="@Url.Action("Delete", new { id = student.StudentId })" class="btn btn-danger btn-sm">
-                    <span class="glyphicon glyphicon-trash"></span><span class="hidden-xs"> Delete</span>
-                </a>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
             </div>
-        </td>
-    </tr>
-    }
-</table>
+        </div>
+    </div>*@

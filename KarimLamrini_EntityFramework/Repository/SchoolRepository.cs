@@ -4,11 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data.Entity;
+using KarimLamrini_EntityFramework.ViewModels;
 
 namespace KarimLamrini_EntityFramework.Repository
 {
     public class SchoolRepository
     {
+        private SchoolContext schoolContext;
+        public SchoolRepository()
+        {
+            schoolContext = new SchoolContext();
+        }
+
         public void Add_Student(Student student)
         {
             using (var context = new SchoolContext())
@@ -39,26 +46,57 @@ namespace KarimLamrini_EntityFramework.Repository
 
         public List<Student> Get_Students()
         {
-            using (var context = new SchoolContext())
+            using (schoolContext)
             {
-                var students = context.Students
+                var students = schoolContext.Students
                     .Include(m => m.Books)
                     .Include(x => x.Books.Select(a => a.Authors))
                     .ToList();
                 return students;
             }
-
         }
 
         public List<Book> Get_Books()
         {
-            using (var context = new SchoolContext())
+            using (schoolContext)
             {
-                var books = context.Books.ToList();
+                var books = schoolContext.Books
+                    .ToList();
 
                 return books;
             }
 
+        }
+
+        public List<Author> Get_Authors()
+        {
+            using (schoolContext)
+            {
+                var authors = schoolContext.Authors
+                    .Include(a => a.Books)
+                    .ToList();
+
+                return authors;
+            }
+        }
+        public ViewModel Get_AllLists()
+        {
+            ViewModel viewModel = new ViewModel();
+            using (schoolContext)
+            {
+                viewModel.Authors = schoolContext.Authors
+                    .Include(a => a.Books)
+                    .ToList();
+
+                viewModel.Books = schoolContext.Books
+                   .ToList();
+               
+                viewModel.Students = schoolContext.Students
+                    .Include(m => m.Books)
+                    .Include(x => x.Books.Select(a => a.Authors))
+                    .ToList();
+                return viewModel;
+            }
         }
 
     }
