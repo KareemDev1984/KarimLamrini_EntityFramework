@@ -11,9 +11,10 @@ namespace KarimLamrini_EntityFramework.Controllers
 {
     public class SchoolController : Controller
     {
-        private ViewModel _viewModel = null;
         private AuthorViewModel _authorViewModel = null;
         private StudentViewModel _studentViewModel = null;
+        private BookViewModel _bookViewModel = null;
+     
         private SchoolRepository _repository = null;
 
         public SchoolController()
@@ -21,14 +22,14 @@ namespace KarimLamrini_EntityFramework.Controllers
             _repository = new SchoolRepository();
             _authorViewModel = new AuthorViewModel();
             _studentViewModel = new StudentViewModel();
-            _viewModel = new ViewModel();
+            _bookViewModel = new BookViewModel(); 
+     
         }
 
         public ActionResult Index()
         {
-            _viewModel = _repository.Get_AllLists();
-                 
-            return View(_viewModel);
+                          
+            return View();
         }
 
         public ActionResult AddStudent()
@@ -47,7 +48,7 @@ namespace KarimLamrini_EntityFramework.Controllers
                 TempData["Message"] = "Student was successfully added!";
                 return RedirectToAction("Index");
             }
-            return View(student);
+            return View();
         }
 
         public ActionResult AddAuthor()
@@ -57,12 +58,11 @@ namespace KarimLamrini_EntityFramework.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddAuthor(Author author,Book book)
+        public ActionResult AddAuthor(Author author)
         {
             var _author = author;
             if (ModelState.IsValid)
             {
-                author.Books.Add(book);
                 _repository.Add_Author(author);
                 TempData["Message"] = "Author was successfully added!";
                 return RedirectToAction("AddAuthor");
@@ -73,11 +73,12 @@ namespace KarimLamrini_EntityFramework.Controllers
 
         public ActionResult AddBook()
         {
-            return View(/*_repository.Get_Books()*/);
+            _bookViewModel.Books = _repository.Get_Books();
+            return View(_bookViewModel);
         }
 
         [HttpPost]
-        public ActionResult AddBook(Book book)
+        public ActionResult AddBook(Book book, Author author)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +86,7 @@ namespace KarimLamrini_EntityFramework.Controllers
                 TempData["Message"] = "Book was successfully added!";
                 return RedirectToAction("Index");
             } 
-            return View(book);
+            return View();
         }
     }
 }

@@ -172,14 +172,17 @@
     <Compile Include="Repository\SchoolRepository.cs" />
     <Compile Include="SchoolContext.cs" />
     <Compile Include="ViewModels\AuthorViewModel.cs" />
-    <Compile Include="ViewModels\ViewModel.cs" />
+    <Compile Include="ViewModels\BookViewModel.cs" />
     <Compile Include="ViewModels\StudentViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\books-stack-of-three.png" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\graduate-student-avatar.png" />
+    <Content Include="Content\hand-writing-with-ballpen.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

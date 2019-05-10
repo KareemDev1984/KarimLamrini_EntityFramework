@@ -6,24 +6,20 @@ using System.Web;
 
 namespace KarimLamrini_EntityFramework.ViewModels
 {
-    public class ViewModel
+    public class BookViewModel
     {
-        public Author Author { get; set; }
         public Book Book { get; set; }
-        public Student Student { get; set; }
-
-        public List<Student> Students { get; set; }
         public List<Book> Books { get; set; }
+       public Author Author { get; set; }
         public List<Author> Authors { get; set; }
 
-        public ViewModel()
+
+        public BookViewModel()
         {
-            Students = new List<Student>();
-            Books = new List<Book>();
-            Authors = new List<Author>();
-            Author = new Author();
             Book = new Book();
-            Student = new Student();
+            Books = new List<Book>();
+            Author = new Author();
+            Authors = new List<Author>();
         }
     }
 }

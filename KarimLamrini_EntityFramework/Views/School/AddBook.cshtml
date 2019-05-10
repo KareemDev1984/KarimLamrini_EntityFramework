@@ -1,54 +1,147 @@
-﻿@model KarimLamrini_EntityFramework.Models.Book
+﻿@model KarimLamrini_EntityFramework.ViewModels.BookViewModel
 
 @{
     ViewBag.Title = "Add Book";
 }
 
-<h2>Add Book</h2>
+<h2>Books</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-<div class="form-horizontal">
-    <h4>Book</h4>
-    <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-        </div>
+
+    <div class="row">
+        <h2 class="col-md-4">Add book</h2>
+
+        <h2 class="col-md-8">List of books</h2>
     </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.Published, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Published, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Published, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.Published, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Published, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Published, "", new { @class = "text-danger" })
-        </div>
-    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Book.Title, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.EditorFor(model => model.Book.Title, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Book.Title, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
+            <div class="form-group">
+                @Html.LabelFor(model => model.Book.Published, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.EditorFor(model => model.Book.Published, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Book.Published, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="glyphicon glyphicon-import" data-toggle="modal" data-target="#exampleModal">
+
+            
+
+            </div>
+
+
+
+        <!-- Modal -->
+        <div class="modal focus " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add author</h5>
+                        
+
+
+                    </div>
+                    <div class="modal-body">
+                        @using (Html.BeginForm())
+                        {
+                            <div class="form-group ">
+                                @Html.LabelFor(model => model.Author.Name, htmlAttributes: new { @class = "control-label" })
+                                <div class="">
+                                    @Html.EditorFor(model => model.Author.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Author.Name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Author.SurName, htmlAttributes: new { @class = "control-label" })
+                                <div>
+                                    @Html.EditorFor(model => model.Author.SurName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Author.SurName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        }
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" ><span class="glyphicon glyphicon-save"></span>Save</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+            <div class="form-group">
+                <div class="pad-top">
+                    <button type="submit" class="btn btn-success btn-lg margin-right">
+                        <span class="glyphicon glyphicon-save"></span> Save
+                    </button>
+                    <a href="@Url.Action("Index")" class="btn btn-warning btn-lg">
+                        <span class="glyphicon glyphicon-remove"></span> Cancel
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8" style="overflow-y:scroll; height:420PX;">
+            <table class="table" >
+                <tr> 
+                    <th>Book ID</th>
+                    <th>Title</th>
+                    <th>Published</th>
+                    <th>Authors</th>
+
+                    <th>&nbsp;</th>
+                </tr>
+                @foreach (var book in Model.Books)
+                {
+                    <tr>
+                        <td>@book.BookId</td>
+                        <td>@book.Title</td>
+                        <td>@book.Published.ToShortDateString()</td>
+                        <td>
+                            <ul>
+                                @foreach (var author in book.Authors)
+                                {
+                                    <li>@author.Name</li>
+                                }
+                            </ul>
+
+                        </td>
+                        <td>
+                            <div class="pull-right">
+                                <a href="@Url.Action("Edit", new { id = book.BookId })" class="btn btn-warning btn-sm margin-right">
+                                    <span class="glyphicon glyphicon-edit"></span><span class="hidden-xs"> Edit</span>
+                                </a>
+                                <a href="@Url.Action("Delete", new { id = book.BookId  })" class="btn btn-danger btn-sm">
+                                    <span class="glyphicon glyphicon-trash"></span><span class="hidden-xs"> Delete</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
         </div>
     </div>
-</div>
+   
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

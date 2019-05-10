@@ -10,7 +10,7 @@ namespace KarimLamrini_EntityFramework.ViewModels
     {
         public Student Student { get; set; }
         public List<Student> Students { get; set; }
-        public Book Book { get; set; }
+       
         public StudentViewModel()
         {
             Student = new Student();

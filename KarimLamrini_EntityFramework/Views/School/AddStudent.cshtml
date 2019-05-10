@@ -11,9 +11,14 @@
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
+
+    <div class="row">
+        <h2 class="col-md-4 ">Add Student</h2>
+     
+        <h2 class="col-md-8">List of students</h2>
+     
+    </div>
         <div class="row">
-            <h2 class="col-md-4 form-group">Add Student</h2>    <h2 class="col-md-8">List of students</h2>
-            <hr />
             <div class="col-md-4">
 
                 <div class="form-group">
@@ -44,45 +49,45 @@
                 </div>
             </div>
 
-
             <div class="col-md-8">
-                    <table class="table">
+                
+                <table class="table">
+                    <tr>
+                        <th>Student ID</th>
+                        <th>First name</th>
+                        <th>Last Name</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                    @foreach (var student in Model.Students)
+                    {
                         <tr>
-                            <th>Student ID</th>
-                            <th>First name</th>
-                            <th>Last Name</th>
-                            <th>&nbsp;</th>
+                            <td>@student.StudentId</td>
+                            <td>@student.FirstName</td>
+                            <td>@student.LastName</td>
+
+                            <td>
+                                <div class="pull-right">
+                                    <a href="@Url.Action("Edit", new { id = student.StudentId })" class="btn btn-warning btn-sm margin-right">
+                                        <span class="glyphicon glyphicon-edit"></span><span class="hidden-xs"> Edit</span>
+                                    </a>
+                                    <a href="@Url.Action("Delete", new { id = student.StudentId })" class="btn btn-danger btn-sm">
+                                        <span class="glyphicon glyphicon-trash"></span><span class="hidden-xs"> Delete</span>
+                                    </a>
+                                </div>
+                            </td>
                         </tr>
-                        @foreach (var student in Model.Students)
-                        {
-                            <tr>
-                                <td>@student.StudentId</td>
-                                <td>@student.FirstName</td>
-                                <td>@student.LastName</td>
-                              
-                                <td>
-                                    <div class="pull-right">
-                                        <a href="@Url.Action("Edit", new { id = student.StudentId })" class="btn btn-warning btn-sm margin-right">
-                                            <span class="glyphicon glyphicon-edit"></span><span class="hidden-xs"> Edit</span>
-                                        </a>
-                                        <a href="@Url.Action("Delete", new { id = student.StudentId })" class="btn btn-danger btn-sm">
-                                            <span class="glyphicon glyphicon-trash"></span><span class="hidden-xs"> Delete</span>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                    </table>
-                </div>
+                    }
+                </table>
+            </div>
         </div>
 
 
-    }
+        }
 
-    <div>
-        @Html.ActionLink("Back to List", "Index")
-    </div>
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
 
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-    }
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+        }

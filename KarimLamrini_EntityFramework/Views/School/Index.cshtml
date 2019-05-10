@@ -1,4 +1,4 @@
-﻿@model  KarimLamrini_EntityFramework.ViewModels.ViewModel
+﻿
 
 @{
     ViewBag.Title = "Home Page";
@@ -14,78 +14,40 @@
     </div>
 }
 
-<div class="stats">
-    <h3 class="text-center">What would you like to do?</h3>
+<div class="alert alert-warning ">
+    <h1 class="text-center">Schoollibrary</h1>
 </div>
 
 
 <div class="row">
-    <div class=" col-md-4">
-        <div class="alert alert-warning alert-dismissible">
-            <h4 class="card-title">Students</h4>
-            <table class="table">
-                <tr>
-                    <th>Student ID</th>
-                    <th>First name</th>
-                    <th>Last Name</th>
-                </tr>
-                @foreach (var student in Model.Students)
-                {
-                    <tr>
-                        <td>@student.StudentId</td>
-                        <td>@student.FirstName</td>
-                        <td>@student.LastName</td>
-                    </tr>
-                }
-            </table>
-        </div>
-        <p> <a class="btn btn-success btn-group-lg btn-block " href="/School/AddStudent">Add student</a></p>
-    </div>
-    <div class=" col-md-4">
-        <div class="alert alert-warning alert-dismissible ">
-            <h4 class="card-title">Authors</h4>
-            <table class="table">
-                <tr>
-                    <th>Author ID</th>
-                    <th>Name</th>
-                    <th>Surname</th>
-                </tr>
-                @foreach (var author in Model.Authors)
-                {
-                    <tr>
-                        <td>@author.AuthorId</td>
-                        <td>@author.Name</td>
-                        <td>@author.SurName</td>
-                    </tr>
-                }
-            </table>
-        </div>
-        <p> <a class="btn btn-success btn-group-lg btn-block" href="/School/AddAuthor">Add Author</a></p>
-    </div>
-    <div class=" col-md-4">
-        <div class="alert alert-warning alert-dismissible ">
-            <h4 class="card-title">Books</h4>
-            <table class="table">
-                <tr>
-                    <th>Book ID</th>
-                    <th>Title</th>
+    <a  href="/School/AddStudent">
+        <div class=" col-md-4">
+            <div class="alert alert-warning alert-dismissible">
 
-
-                </tr>
-      
-                    @foreach (var book in Model.Books)
-                    {
-                        <tr>
-                            <td>@book.BookId</td>
-                            <td>@book.Title</td>
-                        </tr>
-                    }
-              
-            </table>
+                <h4 class="card-title">Students</h4>
+                <img src="~/Content/graduate-student-avatar.png" class="img-responsive" />
+            </div>
+            @*<p> <h2><a class="btn btn-danger btn-group-lg btn-block " href="/School/AddStudent">Students</a></h2></p>*@
         </div>
-        <p>   <a class="btn btn-success btn-group-lg  " href="/School/AddBook">Add Book</a></p>
-    </div>
+    </a>
+    <a href="/School/AddAuthor">
+        <div class=" col-md-4">
+            <div class="alert alert-warning alert-dismissible ">
+                <h4 class="card-title">Authors</h4>
+                <img src="~/Content/hand-writing-with-ballpen.png" class="img-responsive" />
+            </div>
+        </div>
+    </a>
+    <a  href="/School/AddBook">
+        <div class=" col-md-4">
+            <div class="alert alert-warning alert-dismissible ">
+                <h4 class="card-title">Books</h4>
+                <img src="~/Content/books-stack-of-three.png" class="img-responsive">
+            </div>   
+        </div>
+    </a>
 </div>
+
 
 
 

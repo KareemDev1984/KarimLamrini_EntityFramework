@@ -61,8 +61,8 @@ namespace KarimLamrini_EntityFramework.Repository
             using (schoolContext)
             {
                 var books = schoolContext.Books
+                    .Include(a => a.Authors)
                     .ToList();
-
                 return books;
             }
 
@@ -79,25 +79,6 @@ namespace KarimLamrini_EntityFramework.Repository
                 return authors;
             }
         }
-        public ViewModel Get_AllLists()
-        {
-            ViewModel viewModel = new ViewModel();
-            using (schoolContext)
-            {
-                viewModel.Authors = schoolContext.Authors
-                    .Include(a => a.Books)
-                    .ToList();
-
-                viewModel.Books = schoolContext.Books
-                   .ToList();
-               
-                viewModel.Students = schoolContext.Students
-                    .Include(m => m.Books)
-                    .Include(x => x.Books.Select(a => a.Authors))
-                    .ToList();
-                return viewModel;
-            }
-        }
-
+      
     }
 }
