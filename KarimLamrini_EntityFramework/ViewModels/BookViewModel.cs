@@ -10,7 +10,7 @@ namespace KarimLamrini_EntityFramework.ViewModels
     {
         public Book Book { get; set; }
         public List<Book> Books { get; set; }
-       public Author Author { get; set; }
+        public Author Author { get; set; }
         public List<Author> Authors { get; set; }
 
 

@@ -10,12 +10,7 @@ namespace KarimLamrini_EntityFramework.Repository
 {
     public class SchoolRepository
     {
-        private SchoolContext schoolContext;
-        public SchoolRepository()
-        {
-            schoolContext = new SchoolContext();
-        }
-
+       
         public void Add_Student(Student student)
         {
             using (var context = new SchoolContext())
@@ -46,7 +41,7 @@ namespace KarimLamrini_EntityFramework.Repository
 
         public List<Student> Get_Students()
         {
-            using (schoolContext)
+            using (var schoolContext = new SchoolContext())
             {
                 var students = schoolContext.Students
                     .Include(m => m.Books)
@@ -58,7 +53,7 @@ namespace KarimLamrini_EntityFramework.Repository
 
         public List<Book> Get_Books()
         {
-            using (schoolContext)
+            using (var schoolContext = new SchoolContext())
             {
                 var books = schoolContext.Books
                     .Include(a => a.Authors)
@@ -70,10 +65,9 @@ namespace KarimLamrini_EntityFramework.Repository
 
         public List<Author> Get_Authors()
         {
-            using (schoolContext)
+            using (var schoolContext = new SchoolContext())
             {
                 var authors = schoolContext.Authors
-                    .Include(a => a.Books)
                     .ToList();
 
                 return authors;

@@ -74,14 +74,17 @@ namespace KarimLamrini_EntityFramework.Controllers
         public ActionResult AddBook()
         {
             _bookViewModel.Books = _repository.Get_Books();
+            _bookViewModel.Authors = _repository.Get_Authors();
+            ViewBag.SelectListAuthors = new SelectList(_bookViewModel.Authors,"AuthorID" ,"DisplayName");
             return View(_bookViewModel);
         }
 
         [HttpPost]
-        public ActionResult AddBook(Book book, Author author)
+        public ActionResult AddBook(Book book, List<Author> authors)
         {
             if (ModelState.IsValid)
             {
+                book.Authors = authors;
                 _repository.Add_Book(book);
                 TempData["Message"] = "Book was successfully added!";
                 return RedirectToAction("Index");

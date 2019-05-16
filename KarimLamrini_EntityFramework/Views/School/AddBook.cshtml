@@ -35,69 +35,80 @@
                     @Html.ValidationMessageFor(model => model.Book.Published, "", new { @class = "text-danger" })
                 </div>
             </div>
+            <div class="form-group" style="display:none">
+                @Html.LabelFor(model => model.Book.Published, htmlAttributes: new { @class = "control-label"})
+                <div>
+                    @Html.EditorFor(model => model.Book.Published, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Book.Published, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
-            <div class="glyphicon glyphicon-import" data-toggle="modal" data-target="#exampleModal">
-
-
-
+            <div class="form-group">
+                @Html.LabelFor(model => model.Authors, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.DropDownListFor(model => model.Authors, (SelectList)ViewBag.SelectListAuthors, "Select an author...", new { @class = "form-control" })
+                </div>
             </div>
 
 
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal"><span class="glyphicon glyphicon-plus"></span></button>
+            @Html.Label("Add a new author", htmlAttributes: new { @class = "control-label" })
+
             @*<div class="alert alert-warning alert-dismissible ">*@
-                <!-- Modal -->
-                <div class="modal focus" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog " role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Add author</h5>
+            <!-- Modal -->
+            <div class="modal focus" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog " role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add author</h5>
 
 
 
-                            </div>
-                            <div class="modal-body">
-                                @using (Html.BeginForm())
-                                {
-                                    <div class="form-group ">
-                                        @Html.LabelFor(model => model.Author.Name, htmlAttributes: new { @class = "control-label" })
-                                        <div class="">
-                                            @Html.EditorFor(model => model.Author.Name, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model.Author.Name, "", new { @class = "text-danger" })
-                                        </div>
+                        </div>
+                        <div class="modal-body">
+                            @using (Html.BeginForm())
+                            {
+                                <div class="form-group ">
+                                    @Html.LabelFor(model => model.Author.Name, htmlAttributes: new { @class = "control-label" })
+                                    <div class="">
+                                        @Html.EditorFor(model => model.Author.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Author.Name, "", new { @class = "text-danger" })
                                     </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Author.SurName, htmlAttributes: new { @class = "control-label" })
-                                        <div>
-                                            @Html.EditorFor(model => model.Author.SurName, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model.Author.SurName, "", new { @class = "text-danger" })
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Author.SurName, htmlAttributes: new { @class = "control-label" })
+                                    <div>
+                                        @Html.EditorFor(model => model.Author.SurName, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Author.SurName, "", new { @class = "text-danger" })
                                     </div>
-                                }
+                                </div>
+                            }
 
 
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-save"></span>Save</button>
-                                <button type="button" class="btn btn-warning" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
-                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-success"><span class="glyphicon glyphicon-save"></span>Save</button>
+                            <button type="button" class="btn btn-warning" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
                         </div>
                     </div>
                 </div>
+            </div>
 
 
 
 
 
-                <div class="form-group">
-                    <div class="pad-top">
-                        <button type="submit" class="btn btn-success btn-lg margin-right">
-                            <span class="glyphicon glyphicon-save"></span> Save
-                        </button>
-                        <a href="@Url.Action("Index")" class="btn btn-warning btn-lg">
-                            <span class="glyphicon glyphicon-remove"></span> Cancel
-                        </a>
-                    </div>
+            <div class="form-group">
+                <div class="pad-top">
+                    <button type="submit" class="btn btn-success btn-lg margin-right">
+                        <span class="glyphicon glyphicon-save"></span> Save
+                    </button>
+                    <a href="@Url.Action("Index")" class="btn btn-warning btn-lg">
+                        <span class="glyphicon glyphicon-remove"></span> Cancel
+                    </a>
                 </div>
             </div>
+        </div>
             <div class="col-md-8" style="overflow-y:scroll; height:420PX;">
                 <table class="table">
                     <tr>
