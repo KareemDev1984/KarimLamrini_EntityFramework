@@ -68,6 +68,7 @@ namespace KarimLamrini_EntityFramework.Repository
             using (var schoolContext = new SchoolContext())
             {
                 var authors = schoolContext.Authors
+                    .Include(b => b.Books)
                     .ToList();
 
                 return authors;
