@@ -14,6 +14,7 @@ namespace KarimLamrini_EntityFramework.Controllers
         private AuthorViewModel _authorViewModel = null;
         private StudentViewModel _studentViewModel = null;
         private BookViewModel _bookViewModel = null;
+
         private SchoolRepository _repository = null;
 
         public SchoolController()
@@ -22,6 +23,7 @@ namespace KarimLamrini_EntityFramework.Controllers
             _authorViewModel = new AuthorViewModel();
             _studentViewModel = new StudentViewModel();
             _bookViewModel = new BookViewModel();
+    
 
         }
 
@@ -69,39 +71,77 @@ namespace KarimLamrini_EntityFramework.Controllers
 
             return View();
         }
-
-
-        public ActionResult AddBook()
+     
+        public ActionResult AddAuthorInBookView()
         {
-            _bookViewModel.Books = _repository.Get_Books();
-            _bookViewModel.Authors = _repository.Get_Authors();
-            ViewBag.SelectListAuthors = new SelectList(_bookViewModel.Authors, "AuthorID", "DisplayName");
-            return View(_bookViewModel);
+            return View();
         }
 
         [HttpPost]
-        public ActionResult AddBook(Book book, List<Author> authors)
+        public ActionResult AddAuthorInBookView(BookViewModel bookViewModel)
         {
 
             if (ModelState.IsValid)
             {
-                _bookViewModel.Book = book;
+           
+                _repository.Add_Author(bookViewModel.Author);
+             
+                TempData["Message"] = "Author was successfully added!";
+                return RedirectToAction("AddBook");
+            }
 
-                foreach (var item in authors)
-                {
-                    _bookViewModel.Book.Authors.Add(item);
+            return RedirectToAction("AddBook");
+        }
 
-                }
-                foreach (var item in _bookViewModel.Authors)
-                {
-                    _bookViewModel.Book.Authors.Add(item);
 
-                }
-                _repository.Add_Book(_bookViewModel.Book);
+        public ActionResult AddBook()
+        {
+           
+            _bookViewModel.Books = _repository.Get_Books();
+            _bookViewModel.Authors = _repository.Get_Authors();
+            ViewBag.SelectListAuthors = new SelectList(_bookViewModel.Authors, "AuthorID", "DisplayName");
+
+            return View(_bookViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult AddBook(BookViewModel bookViewModel)
+        {
+           
+            if (ModelState.IsValid)
+            {
+                //foreach (var item in bookViewModel.Authors)
+                //{
+                //    bookViewModel.Book.Authors.Add(item);
+                //}
+                              
+                _repository.Add_Book(bookViewModel.Book);
                 TempData["Message"] = "Book was successfully added!";
                 return RedirectToAction("Index");
             }
             return View();
+        }
+
+        //public JsonResult LoadAuthors()
+        //{
+        //    IEnumerable<Author> authorsSelect = _repository.Get_Authors();
+
+        //    return Json(authorsSelect.Select(x => new
+        //    {
+
+        //        Id = x.AuthorId,
+        //        Name = x.DisplayName
+
+        //    }));
+        //}
+
+        [HttpPost]
+        public JsonResult LoadAuthors()
+        {
+            _bookViewModel.Authors = _repository.Get_Authors();
+           var authorsSelect = new SelectList(_bookViewModel.Authors, "AuthorID", "DisplayName");
+
+            return Json(authorsSelect);
         }
     }
 }

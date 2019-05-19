@@ -1,30 +1,32 @@
 ﻿@model KarimLamrini_EntityFramework.ViewModels.BookViewModel
 
 @{
-    /**/
-    int ListItem = 0;
+
     ViewBag.Title = "Add Book";
+
+
 }
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <h2>Books</h2>
+@TempData["title"]
 
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <div class="row">
-        <h2 class="col-md-4">Add book</h2>
+<div class="row">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <h2 class="col-md-8">List of books</h2>
-    </div>
-    <div class="row">
+
         <div class="col-md-4">
+            <h2>Add book</h2>
+            <hr />
             <div class="form-group">
                 @Html.LabelFor(model => model.Book.Title, htmlAttributes: new { @class = "control-label" })
                 <div>
-                    @Html.EditorFor(model => model.Book.Title, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.Book.Title, new { htmlAttributes = new { @class = "form-control", id = "title", @Value = TempData["title"] } })
                     @Html.ValidationMessageFor(model => model.Book.Title, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -33,32 +35,49 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Book.Published, htmlAttributes: new { @class = "control-label" })
                 <div>
-                    @Html.EditorFor(model => model.Book.Published, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.Book.Published, new { htmlAttributes = new { @class = "form-control", id = "date" } })
                     @Html.ValidationMessageFor(model => model.Book.Published, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <div Id="NewAuthorContainer">
-
-            </div>
-
-            <!--DDL voor bestaande authors-->
-            <div class="form-group">
-                @Html.LabelFor(model => model.Authors, htmlAttributes: new { @class = "control-label" })
-                <div>
-                    @Html.DropDownListFor(model => model.Authors, (SelectList)ViewBag.SelectListAuthors, "Select an author...", new { @class = "form-control" })
+            <div class=" form-group">
+                @Html.LabelFor(model => model.Book.Authors, htmlAttributes: new { @class = "control-label" })
+                <div Id="NewAuthorContainer">
+                    @Html.ListBoxFor(model => model.Book.Authors, (SelectList)ViewBag.SelectListAuthors, new { @class = "form-control", style = "border-radius:4px", id="bookAuthors" })
                 </div>
             </div>
+            
+            <!--DDL voor bestaande authors-->
+            @*<div class="form-group">
+                @Html.Label("Select author from list", htmlAttributes: new { @class = "control-label" })   <button type="button" onclick="setValue()" class="btn btn-success" ><span class="glyphicon glyphicon-arrow-up margin-right btn-group-xs"></span></button>
+                <div>
+                    <select size="5" id="ddlAuthors" class="form-control" style="border-radius:4px" multiple></select>
+                </div>
+            </div>*@
 
             <!--Add a new author button-->
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal"><span class="glyphicon glyphicon-plus"></span></button>
             @Html.Label("Add a new author", htmlAttributes: new { @class = "control-label" })
 
+            <div class="form-group">
+                <div class="pad-top">
+                    <button type="submit" class="btn btn-success btn-lg c">
+                        <span class="glyphicon glyphicon-save"></span> Save
+                    </button>
+                    <a href="@Url.Action("Index")" class="btn btn-warning btn-lg">
+                        <span class="glyphicon glyphicon-remove"></span> Cancel
+                    </a>
+                </div>
+            </div>
 
 
 
         </div>
-        <!--Tabel lijst met boeken en hun auteurs-->
-        <div class="col-md-8" style="overflow-y:scroll; height:420PX;">
+    }
+
+    <!--Tabel lijst met boeken en hun auteurs-->
+    <div class="col-md-8">
+        <h2>List of books</h2>
+        <div style="overflow-y:scroll; height:400px">
             <table class="table">
                 <tr>
                     <th>Book ID</th>
@@ -97,86 +116,229 @@
             </table>
         </div>
     </div>
+</div>
 
-}
-<div class="modal focus" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog " role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Add author</h5>
             </div>
-            <div class="modal-body">
-
-
-                <div class="form-group ">
-                    @Html.LabelFor(model => model.Author.Name, htmlAttributes: new { @class = "control-label" })
-                    <div class="">
-                        @Html.EditorFor(model => model.Author.Name, new { htmlAttributes = new { @class = "form-control", id = "authorName" } })
-                        @Html.ValidationMessageFor(model => model.Author.Name, "", new { @class = "text-danger" })
+            <form id="myForm">
+                <div class="modal-body">
+                    <div class="form-group ">
+                        @Html.LabelFor(model => model.Author.Name, htmlAttributes: new { @class = "control-label" })
+                        <div class="">
+                            @Html.EditorFor(model => model.Author.Name, new { htmlAttributes = new { @class = "form-control", id = "authorName" } })
+                            @Html.ValidationMessageFor(model => model.Author.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Author.SurName, htmlAttributes: new { @class = "control-label" })
+                        <div>
+                            @Html.EditorFor(model => model.Author.SurName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Author.SurName, "", new { @class = "text-danger" })
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Author.SurName, htmlAttributes: new { @class = "control-label" })
-                    <div>
-                        @Html.EditorFor(model => model.Author.SurName, new { htmlAttributes = new { @class = "form-control", id = "authorSurName" } })
-                        @Html.ValidationMessageFor(model => model.Author.SurName, "", new { @class = "text-danger" })
+                <div class="modal-footer">
+                    <div style="text-align:center;display:none" id="loaderDiv" class="pull-left">
+                        <img src="~/Content/ZKZg.gif" width="70" />
                     </div>
+                    <button type="reset" value="Submit" class="btn btn-success" id="btnSubmit"><span class="glyphicon glyphicon-save"></span>Save</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-success" onclick="AddNewAuthor()" ><span class="glyphicon glyphicon-save"></span>Save</button>
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
-            </div>
+            </form>
+
+
         </div>
 
-    </div>
-</div>
-<div class="form-group">
-    <div class="pad-top">
-        <button type="submit" class="btn btn-success btn-lg margin-right">
-            <span class="glyphicon glyphicon-save"></span> Save
-        </button>
-        <a href="@Url.Action("Index")" class="btn btn-warning btn-lg">
-            <span class="glyphicon glyphicon-remove"></span> Cancel
-        </a>
     </div>
 </div>
 
 <div style="display:none">
-    <div id="@ListItem.ToString()" >
+    <div id="authorBookList">
         <div class="form-group">
-            @Html.LabelFor(model => model.Author, htmlAttributes: new { @class = "control-label" })
+            @Html.LabelFor(model => model.Book.Authors, htmlAttributes: new { @class = "control-label" })
             <div class="">
-                @Html.EditorFor(model => model.Book, new { htmlAttributes = new { @class = "form-control", id = $"authorName{ListItem}" } })
-                @Html.ValidationMessageFor(model => model.Authors[ListItem].Name, "", new { @class = "text-danger"})
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Author.SurName, htmlAttributes: new { @class = "control-label" })
-            <div>
-                @Html.EditorFor(model => model.Authors[ListItem].SurName, new { htmlAttributes = new { @class = "form-control", id = $"authorSurName{ListItem}" } })
-                @Html.ValidationMessageFor(model => model.Authors[ListItem].SurName, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(model => model.Author.Name, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
     </div>
 </div>
 
-<script type="text/javascript">
-    function AddNewAuthor() {
-        var authorForm = document.getElementsById("@ListItem.ToString()");
-        authorForm.removeAttribute("style");
-   
-        var NewAuthor = document.getElementById("NewAuthorContainer");
-     
-        NewAuthor.appendChild(authorForm);
-        var name = document.getElementById("authorName"+@ListItem.ToString());
-        name.value = document.getElementById("authorName").value;
-   
-        var surName = getElementById("authorSurName"+@ListItem.ToString());
-        surName.value = document.getElementById("authorSurName").value;
-        @ListItem++;
-        return NewAuthor;
+
+@*<div class="container" style="width:40%;margin-top:2%">
+
+        <form id="myForm">
+
+            <div class="form-group ">
+                @Html.LabelFor(model => model.Author.Name, htmlAttributes: new { @class = "control-label" })
+                <div class="">
+                    @Html.EditorFor(model => model.Author.Name, new { htmlAttributes = new { @class = "form-control", id = "authorName" } })
+                    @Html.ValidationMessageFor(model => model.Author.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Author.SurName, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.EditorFor(model => model.Author.SurName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Author.SurName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <input type="reset" value="Submit" class="btn btn-block btn-primary" id="btnSubmit" />
+
+        </form>
+
+        <div style="text-align:center;display:none" id="loaderDiv">
+            <img src="~/Content/InternetSlowdown_Day.gif" width="150" />
+        </div>
+    </div>*@
+
+
+<script>
+    //$(function () {
+    //    var ddlAuthors = $("#ddlAuthors");
+    //    ddlAuthors.empty().append('<option selected="selected" value="0" disabled = "disabled">Loading.....</option>');
+    //    $.ajax({
+    //        type: "POST",
+    //        url: "/school/LoadAuthors",
+    //        data: '{}',
+    //        contentType: "application/json; charset=utf-8",
+    //        dataType: "json",
+    //        success: function (response) {
+    //            ddlAuthors.empty().append('<option selected="selected" value="0">Please select</option>');
+    //            $.each(response, function () {
+    //                ddlAuthors.append($("<option></option>").val(this['Value']).html(this['Text']));
+    //            });
+    //        },
+    //        failure: function (response) {
+    //            alert(response.responseText);
+    //        },
+    //        error: function (response) {
+    //            alert(response.responseText);
+    //        }
+    //    });
+    //});
+
+
+    function Load() {
+        var ddlAuthors = $("#bookAuthors");
+        ddlAuthors.empty().append('<option selected="selected" value="0" disabled = "disabled">Loading.....</option>');
+        $.ajax({
+            type: "POST",
+            url: "/school/LoadAuthors",
+            data: '{}',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                ddlAuthors.empty().append('<option selected="selected" value="0">Please select</option>');
+                $.each(response, function () {
+                    ddlAuthors.append($("<option></option>").val(this['Value']).html(this['Text']));
+                });
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    };
+
+    function myfunction() {
+        $("#exampleModal").modal("hide");
     }
+
+    $(document).ready(function () {
+        $("#btnSubmit").click(function () {
+            debugger
+            $("#loaderDiv").show();
+
+            var data = $("#myForm").serialize();
+            $.ajax({
+
+                type: "POST",
+                url: "/School/AddAuthorInBookView",
+                data: data,
+                success: function (response) {
+                    alert("Succesful");
+                    myfunction();
+                    $("#loaderDiv").hide();
+                    Load();
+                }
+            });
+        });
+    });
+
+    function setValue() {
+        var myVal = jQuery("#ddlAuthors option:selected").val();
+        var opt = document.createElement("option");
+
+        opt.text = myVal;
+        opt.value = myVal;
+
+        document.getElementById("bookAuthors").options.add(opt);
+    }
+    //function AddToList() {
+
+    //    // Create an Option object        
+
+    //    var opt = document.createElement("option");
+
+    //    // Add an Option object to List Box
+
+    //    document.getElementById("bookAuthors").options.add(opt);
+    //    opt.text = document.getElementById("TextBox4").value;
+    //    opt.value = document.getElementById("TextBox4").value;
+    //    document.getElementById("ListBox1").options.add(opt);
+
+
+    //}
+
+</script>
+<script type="text/javascript">
+                            //function AddNewAuthor() {
+
+
+                            //    //var authorForm = document.getElementById("authorBookList");
+                            //    //authorForm.removeAttribute("style");
+
+                            //    //var copy = authorForm.cloneNode(true);
+                            //    //copy.removeAttribute("style");
+
+                            //    //var NewAuthor = document.getElementById("NewAuthorContainer");
+
+                            //    //NewAuthor.appendChild(copy);
+
+                            //    var bookTitle = document.getElementById("title");
+                            //    var bookTitleValue = bookTitle.value;
+                            //    //var date = document.getElementById("date");
+                            //    //var dateValue = date.value;
+
+                            //    alert(data);
+
+                            //    sessionStorage.setItem("title", bookTitleValue);
+
+                            //    //var myF
+                            //    ormdata = $("#myForm").serialize();
+                            //    //$.ajax({
+
+                            //    //    type: "POST",
+                            //    //    url: "School/AddAuthor",
+                            //    //    data: myFormdata,
+                            //    //    success: function () {
+
+                            //    //        $("#exampleModal").modal("hide");
+                            //    //    }
+                            //    //});
+                            }
+
+
+
+
 </script>
 
 
