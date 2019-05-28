@@ -15,7 +15,7 @@ namespace KarimLamrini_EntityFramework.Migrations
 
         protected override void Seed(KarimLamrini_EntityFramework.SchoolContext context)
         {
-            DummyData.AddData(context);
+            //DummyData.AddData(context);
         }
     }
 }

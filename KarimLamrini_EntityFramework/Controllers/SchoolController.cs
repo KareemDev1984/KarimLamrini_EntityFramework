@@ -11,25 +11,22 @@ namespace KarimLamrini_EntityFramework.Controllers
 {
     public class SchoolController : Controller
     {
-        private AuthorViewModel _authorViewModel = null;
-        private StudentViewModel _studentViewModel = null;
-        private BookViewModel _bookViewModel = null;
-
+    
+    
         private SchoolRepository _repository = null;
+        private SchoolViewModel _schoolViewModel = null;
+        private StudentViewModel _studentViewModel = null;
 
         public SchoolController()
         {
             _repository = new SchoolRepository();
-            _authorViewModel = new AuthorViewModel();
+            _schoolViewModel = new SchoolViewModel();
             _studentViewModel = new StudentViewModel();
-            _bookViewModel = new BookViewModel();
-    
-
         }
 
-        public ActionResult Index()
+        public ActionResult Index(SingletonExampleClass singletonExampleClass)
         {
-
+           
             return View();
         }
 
@@ -41,11 +38,11 @@ namespace KarimLamrini_EntityFramework.Controllers
 
 
         [HttpPost]
-        public ActionResult AddStudent(Student student)
+        public ActionResult AddStudent(StudentViewModel studentViewModel)
         {
             if (ModelState.IsValid)
             {
-                _repository.Add_Student(student);
+                _repository.Add_Student(studentViewModel.Student);
                 TempData["Message"] = "Student was successfully added!";
                 return RedirectToAction("Index");
             }
@@ -54,21 +51,19 @@ namespace KarimLamrini_EntityFramework.Controllers
 
         public ActionResult AddAuthor()
         {
-            _authorViewModel.Authors = _repository.Get_Authors();
-            return View(_authorViewModel);
+           _schoolViewModel.AvailableAuthors = _repository.Get_Authors();
+            return View(_schoolViewModel);
         }
 
         [HttpPost]
-        public ActionResult AddAuthor(Author author)
+        public ActionResult AddAuthor(SchoolViewModel schoolViewModel)
         {
-
             if (ModelState.IsValid)
             {
-                _repository.Add_Author(author);
+                _repository.Add_Author(schoolViewModel.Author);
                 TempData["Message"] = "Author was successfully added!";
                 return RedirectToAction("AddAuthor");
             }
-
             return View();
         }
      
@@ -78,42 +73,40 @@ namespace KarimLamrini_EntityFramework.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddAuthorInBookView(BookViewModel bookViewModel)
+        public ActionResult AddAuthorInBookView(Author author)
         {
-
             if (ModelState.IsValid)
             {
-           
-                _repository.Add_Author(bookViewModel.Author);
+                _repository.Add_Author(author);
              
                 TempData["Message"] = "Author was successfully added!";
                 return RedirectToAction("AddBook");
             }
-
             return RedirectToAction("AddBook");
         }
 
 
         public ActionResult AddBook()
         {
-           
-            _bookViewModel.Books = _repository.Get_Books();
-            _bookViewModel.Authors = _repository.Get_Authors();
-            ViewBag.SelectListAuthors = new SelectList(_bookViewModel.Authors, "AuthorID", "DisplayName");
+            _schoolViewModel.Books = _repository.Get_Books();
+            _schoolViewModel.AvailableAuthors = _repository.Get_Authors();
+            ViewBag.SelectListAuthors = new SelectList(_schoolViewModel.AvailableAuthors, "AuthorID", "DisplayName");
 
-            return View(_bookViewModel);
+            return View(_schoolViewModel);
         }
 
         [HttpPost]
-        public ActionResult AddBook(BookViewModel bookViewModel)
-        {
-           
+        public ActionResult AddBook(SchoolViewModel bookViewModel)
+        {   
             if (ModelState.IsValid)
             {
-                //foreach (var item in bookViewModel.Authors)
-                //{
-                //    bookViewModel.Book.Authors.Add(item);
-                //}
+                List<Author> selectedAuthors = new List<Author>();
+                foreach (var id in bookViewModel.idsOfSelectedAuthors)
+                {
+                    selectedAuthors.Add(_repository.Get_Authors().FirstOrDefault(author => author.AuthorId == id));
+                }
+
+                bookViewModel.Book.Authors = selectedAuthors;
                               
                 _repository.Add_Book(bookViewModel.Book);
                 TempData["Message"] = "Book was successfully added!";
@@ -135,11 +128,16 @@ namespace KarimLamrini_EntityFramework.Controllers
         //    }));
         //}
 
+    
+
         [HttpPost]
         public JsonResult LoadAuthors()
         {
-            _bookViewModel.Authors = _repository.Get_Authors();
-           var authorsSelect = new SelectList(_bookViewModel.Authors, "AuthorID", "DisplayName");
+
+           
+
+            _schoolViewModel.AvailableAuthors = _repository.Get_Authors();
+           var authorsSelect = new SelectList(_schoolViewModel.AvailableAuthors, "AuthorID", "DisplayName");
 
             return Json(authorsSelect);
         }

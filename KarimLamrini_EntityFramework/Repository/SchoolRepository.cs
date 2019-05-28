@@ -10,20 +10,24 @@ namespace KarimLamrini_EntityFramework.Repository
 {
     public class SchoolRepository
     {
-       
+        private SchoolContext context;
+        public SchoolRepository()
+        {
+            context = new SchoolContext();
+        }
+
         public void Add_Student(Student student)
         {
-            using (var context = new SchoolContext())
+            using (context)
             {
                 context.Students.Add(student);
                 context.SaveChanges();
             }
-
         }
 
         public void Add_Book(Book book)
         {
-            using (var context = new SchoolContext())
+            using (context)
             {
                 context.Books.Add(book);
                 context.SaveChanges();
@@ -32,7 +36,7 @@ namespace KarimLamrini_EntityFramework.Repository
 
         public void Add_Author(Author author)
         {
-            using (var context = new SchoolContext())
+            using (context)
             {
                 context.Authors.Add(author);
                 context.SaveChanges();
@@ -41,9 +45,9 @@ namespace KarimLamrini_EntityFramework.Repository
 
         public List<Student> Get_Students()
         {
-            using (var schoolContext = new SchoolContext())
+            using (context)
             {
-                var students = schoolContext.Students
+                var students = context.Students
                     .Include(m => m.Books)
                     .Include(x => x.Books.Select(a => a.Authors))
                     .ToList();
@@ -51,29 +55,26 @@ namespace KarimLamrini_EntityFramework.Repository
             }
         }
 
+    
+
         public List<Book> Get_Books()
-        {
-            using (var schoolContext = new SchoolContext())
-            {
-                var books = schoolContext.Books
+        { 
+                var books = context.Books.OrderBy(m => m.BookId)
                     .Include(a => a.Authors)
                     .ToList();
                 return books;
-            }
-
+            
         }
 
         public List<Author> Get_Authors()
         {
-            using (var schoolContext = new SchoolContext())
-            {
-                var authors = schoolContext.Authors
+    
+                var authors = context.Authors
                     .Include(b => b.Books)
                     .ToList();
 
                 return authors;
-            }
         }
-      
     }
 }
+

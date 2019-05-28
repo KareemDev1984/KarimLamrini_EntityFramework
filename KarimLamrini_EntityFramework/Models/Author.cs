@@ -23,8 +23,7 @@ namespace KarimLamrini_EntityFramework.Models
         {
             get {
                 return $"{SurName} {Name}";
-            }
-            
+            } 
         }
 
 

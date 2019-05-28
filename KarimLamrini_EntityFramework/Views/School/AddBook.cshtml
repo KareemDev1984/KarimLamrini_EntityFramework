@@ -1,16 +1,12 @@
-﻿@model KarimLamrini_EntityFramework.ViewModels.BookViewModel
+﻿@model KarimLamrini_EntityFramework.ViewModels.SchoolViewModel
 
 @{
-
     ViewBag.Title = "Add Book";
-
-
 }
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <h2>Books</h2>
 @TempData["title"]
-
 
 
 <div class="row">
@@ -31,7 +27,6 @@
                 </div>
             </div>
 
-
             <div class="form-group">
                 @Html.LabelFor(model => model.Book.Published, htmlAttributes: new { @class = "control-label" })
                 <div>
@@ -39,20 +34,13 @@
                     @Html.ValidationMessageFor(model => model.Book.Published, "", new { @class = "text-danger" })
                 </div>
             </div>
+
             <div class=" form-group">
                 @Html.LabelFor(model => model.Book.Authors, htmlAttributes: new { @class = "control-label" })
                 <div Id="NewAuthorContainer">
-                    @Html.ListBoxFor(model => model.Book.Authors, (SelectList)ViewBag.SelectListAuthors, new { @class = "form-control", style = "border-radius:4px", id="bookAuthors" })
+                    @Html.ListBoxFor(model => model.idsOfSelectedAuthors, (SelectList)ViewBag.SelectListAuthors, new { @class = "form-control", style = "border-radius:4px", id = "bookAuthors" })
                 </div>
             </div>
-            
-            <!--DDL voor bestaande authors-->
-            @*<div class="form-group">
-                @Html.Label("Select author from list", htmlAttributes: new { @class = "control-label" })   <button type="button" onclick="setValue()" class="btn btn-success" ><span class="glyphicon glyphicon-arrow-up margin-right btn-group-xs"></span></button>
-                <div>
-                    <select size="5" id="ddlAuthors" class="form-control" style="border-radius:4px" multiple></select>
-                </div>
-            </div>*@
 
             <!--Add a new author button-->
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal"><span class="glyphicon glyphicon-plus"></span></button>
@@ -68,9 +56,6 @@
                     </a>
                 </div>
             </div>
-
-
-
         </div>
     }
 
@@ -97,7 +82,7 @@
                             <ul>
                                 @foreach (var author in book.Authors)
                                 {
-                                    <li>@author.Name</li>
+                                    <li>@author.DisplayName</li>
                                 }
                             </ul>
                         </td>
@@ -150,8 +135,6 @@
                     <button type="button" class="btn btn-warning" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
                 </div>
             </form>
-
-
         </div>
 
     </div>
@@ -168,67 +151,13 @@
     </div>
 </div>
 
-
-@*<div class="container" style="width:40%;margin-top:2%">
-
-        <form id="myForm">
-
-            <div class="form-group ">
-                @Html.LabelFor(model => model.Author.Name, htmlAttributes: new { @class = "control-label" })
-                <div class="">
-                    @Html.EditorFor(model => model.Author.Name, new { htmlAttributes = new { @class = "form-control", id = "authorName" } })
-                    @Html.ValidationMessageFor(model => model.Author.Name, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.Author.SurName, htmlAttributes: new { @class = "control-label" })
-                <div>
-                    @Html.EditorFor(model => model.Author.SurName, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Author.SurName, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <input type="reset" value="Submit" class="btn btn-block btn-primary" id="btnSubmit" />
-
-        </form>
-
-        <div style="text-align:center;display:none" id="loaderDiv">
-            <img src="~/Content/InternetSlowdown_Day.gif" width="150" />
-        </div>
-    </div>*@
-
-
 <script>
-    //$(function () {
-    //    var ddlAuthors = $("#ddlAuthors");
-    //    ddlAuthors.empty().append('<option selected="selected" value="0" disabled = "disabled">Loading.....</option>');
-    //    $.ajax({
-    //        type: "POST",
-    //        url: "/school/LoadAuthors",
-    //        data: '{}',
-    //        contentType: "application/json; charset=utf-8",
-    //        dataType: "json",
-    //        success: function (response) {
-    //            ddlAuthors.empty().append('<option selected="selected" value="0">Please select</option>');
-    //            $.each(response, function () {
-    //                ddlAuthors.append($("<option></option>").val(this['Value']).html(this['Text']));
-    //            });
-    //        },
-    //        failure: function (response) {
-    //            alert(response.responseText);
-    //        },
-    //        error: function (response) {
-    //            alert(response.responseText);
-    //        }
-    //    });
-    //});
-
 
     function Load() {
         var ddlAuthors = $("#bookAuthors");
         ddlAuthors.empty().append('<option selected="selected" value="0" disabled = "disabled">Loading.....</option>');
         $.ajax({
-            type: "POST",
+            type: "Post",
             url: "/school/LoadAuthors",
             data: '{}',
             contentType: "application/json; charset=utf-8",
@@ -273,70 +202,15 @@
         });
     });
 
-    function setValue() {
-        var myVal = jQuery("#ddlAuthors option:selected").val();
-        var opt = document.createElement("option");
-
-        opt.text = myVal;
-        opt.value = myVal;
-
-        document.getElementById("bookAuthors").options.add(opt);
-    }
-    //function AddToList() {
-
-    //    // Create an Option object        
-
+    //function setValue() {
+    //    var myVal = jQuery("#ddlAuthors option:selected").val();
     //    var opt = document.createElement("option");
 
-    //    // Add an Option object to List Box
+    //    opt.text = myVal;
+    //    opt.value = myVal;
 
     //    document.getElementById("bookAuthors").options.add(opt);
-    //    opt.text = document.getElementById("TextBox4").value;
-    //    opt.value = document.getElementById("TextBox4").value;
-    //    document.getElementById("ListBox1").options.add(opt);
-
-
     //}
-
-</script>
-<script type="text/javascript">
-                            //function AddNewAuthor() {
-
-
-                            //    //var authorForm = document.getElementById("authorBookList");
-                            //    //authorForm.removeAttribute("style");
-
-                            //    //var copy = authorForm.cloneNode(true);
-                            //    //copy.removeAttribute("style");
-
-                            //    //var NewAuthor = document.getElementById("NewAuthorContainer");
-
-                            //    //NewAuthor.appendChild(copy);
-
-                            //    var bookTitle = document.getElementById("title");
-                            //    var bookTitleValue = bookTitle.value;
-                            //    //var date = document.getElementById("date");
-                            //    //var dateValue = date.value;
-
-                            //    alert(data);
-
-                            //    sessionStorage.setItem("title", bookTitleValue);
-
-                            //    //var myF
-                            //    ormdata = $("#myForm").serialize();
-                            //    //$.ajax({
-
-                            //    //    type: "POST",
-                            //    //    url: "School/AddAuthor",
-                            //    //    data: myFormdata,
-                            //    //    success: function () {
-
-                            //    //        $("#exampleModal").modal("hide");
-                            //    //    }
-                            //    //});
-                            }
-
-
 
 
 </script>
@@ -344,6 +218,5 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-
 }
 
