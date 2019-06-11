@@ -11,8 +11,7 @@ namespace KarimLamrini_EntityFramework.Controllers
 {
     public class SchoolController : Controller
     {
-    
-    
+       
         private SchoolRepository _repository = null;
         private SchoolViewModel _schoolViewModel = null;
         private StudentViewModel _studentViewModel = null;
@@ -24,7 +23,7 @@ namespace KarimLamrini_EntityFramework.Controllers
             _studentViewModel = new StudentViewModel();
         }
 
-        public ActionResult Index(SingletonExampleClass singletonExampleClass)
+        public ActionResult Index()
         {
            
             return View();
@@ -133,8 +132,6 @@ namespace KarimLamrini_EntityFramework.Controllers
         [HttpPost]
         public JsonResult LoadAuthors()
         {
-
-           
 
             _schoolViewModel.AvailableAuthors = _repository.Get_Authors();
            var authorsSelect = new SelectList(_schoolViewModel.AvailableAuthors, "AuthorID", "DisplayName");
